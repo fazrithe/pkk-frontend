@@ -15,7 +15,7 @@ export async function errorAlert(title, message){
       });
 }
 
-export async function successAlert(title, message){
+export async function successAlert(title, message, url){
     Swal.fire({
         title: title,
         text: message,
@@ -23,7 +23,7 @@ export async function successAlert(title, message){
         confirmButtonText: "OK",
     }).then(function () {
         // Redirect the user
-        window.location.href = "/auth/login";
+        window.location.href = url;
     });
 }
 

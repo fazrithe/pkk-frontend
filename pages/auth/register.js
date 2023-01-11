@@ -23,7 +23,7 @@ export default function Register(){
                 password:password,
                 confPassword:confirmPassword
             }).then((response) => {
-                successAlert('success', response.data.msg)
+                successAlert('success', response.data.msg ,'/auth/login')
             })
         }catch (error){
             if(error){
