@@ -1,11 +1,12 @@
 import Swal from "sweetalert2";
 
-export const alertService = {
-    error,
-    success
+
+const alertService = () => {
+    errorAlert,
+    successAlert
 }
 
-function error(title, message){
+export async function errorAlert(title, message){
     Swal.fire({
         title: title,
         text: message,
@@ -14,7 +15,7 @@ function error(title, message){
       });
 }
 
-function success(title, message){
+export async function successAlert(title, message){
     Swal.fire({
         title: title,
         text: message,
@@ -25,3 +26,5 @@ function success(title, message){
         window.location.href = "/auth/login";
     });
 }
+
+export default alertService;

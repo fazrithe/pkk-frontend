@@ -2,7 +2,7 @@ import axios from "axios";
 import "bulma/css/bulma.css";
 import { useState } from 'react';
 import Swal from "sweetalert2";
-import { alertService } from "../componens/alert/alertService";
+import { errorAlert,successAlert } from "../componens/alert/alertService";
 
 export default function Register(){
     const [name, setName] = useState('');
@@ -23,11 +23,11 @@ export default function Register(){
                 password:password,
                 confPassword:confirmPassword
             }).then((response) => {
-                alertService.success('success', response.data.msg)
+                successAlert('success', response.data.msg)
             })
         }catch (error){
             if(error){
-                alertService.error('Error',error.response.data.msg);
+                errorAlert('Error',error.response.data.msg);
             }
         }   
     }
