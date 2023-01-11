@@ -1,6 +1,17 @@
 import "bulma/css/bulma.css";
+import axios from "axios";
+import { successAlert } from "../../componens/alert/alertService";
 
 export default function Navbar() {
+
+    const Logout = async () => {
+        try{
+            await axios.delete('http://localhost:5000/api/logout');
+            successAlert('success','Logout Success','/')
+        }catch(error){
+            console.log(error);
+        }
+    }
   return (
     <nav className='navbar is-light' role="navigation" arial-aria-label='main navigation'>
       <div className='container'>
@@ -24,10 +35,10 @@ export default function Navbar() {
  
                     <div className="navbar-end">
                         <div className="navbar-item">
-                            <div className="buttons">
-                                <a href="/auth/login" className="button is-light">
-                                    Logout
-                                </a>
+                        <div className="buttons">
+                                <button onClick={Logout} className="button is-light">
+                                    Log Out
+                                </button>
                             </div>
                         </div>
                     </div>
