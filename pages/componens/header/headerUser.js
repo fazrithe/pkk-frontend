@@ -1,12 +1,14 @@
 import "bulma/css/bulma.css";
 import axios from "axios";
 import { successAlert } from "../../componens/alert/alertService";
+import Cookies from "js-cookie";
 
 export default function Navbar() {
 
     const Logout = async () => {
         try{
             await axios.delete('http://localhost:5000/api/logout');
+            Cookies.remove('token');
             successAlert('success','Logout Success','/')
         }catch(error){
             console.log(error);

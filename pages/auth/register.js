@@ -1,7 +1,6 @@
 import axios from "axios";
 import "bulma/css/bulma.css";
 import { useState } from 'react';
-import Swal from "sweetalert2";
 import { errorAlert,successAlert } from "../componens/alert/alertService";
 
 export default function Register(){
@@ -15,7 +14,6 @@ export default function Register(){
     const Register = async (e) => {
         e.preventDefault();
         try{
-            console.log(password);
             await axios.post('http://localhost:5000/api/register',{
                 name:name,
                 username:username,
@@ -27,7 +25,7 @@ export default function Register(){
             })
         }catch (error){
             if(error){
-                errorAlert('Error',error.response.data.msg);
+                errorAlert('Error',error.response.data.msg, '/auth/register');
             }
         }   
     }

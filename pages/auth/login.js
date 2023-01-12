@@ -2,6 +2,10 @@ import "bulma/css/bulma.css";
 import axios from "axios";
 import { useState } from 'react';
 import { errorAlert,successAlert } from "../componens/alert/alertService";
+import Router from 'next/router';
+import Cookies from 'js-cookie';
+import cors from "cors";
+import NextCors from 'nextjs-cors';
 
 export default function Login(){
     const [email, setEmail] = useState('');
@@ -14,11 +18,12 @@ export default function Login(){
                 email: email,
                 password: password
             }).then((response) => {
-                successAlert('success', response.data.msg ,'/dashboard')
+                Cookies.set('token', response.data.body);
+                Router.push('/dashboard');
             })
         }catch(error){
             if (error.response) {
-                errorAlert('Error',error.response.data.msg);
+                errorAlert('Error',error.response.data.msg, '/auth/login');
             }
         }
     }

@@ -6,13 +6,17 @@ const alertService = () => {
     successAlert
 }
 
-export async function errorAlert(title, message){
+export async function errorAlert(title, message, url){
     Swal.fire({
         title: title,
         text: message,
         icon: "error",
         confirmButtonText: "OK",
-      });
+    }).then(function () {
+        // Redirect the user
+        window.location.href = url;
+    });
+      
 }
 
 export async function successAlert(title, message, url){
