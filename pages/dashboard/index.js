@@ -5,51 +5,42 @@ import Navbar from "../componens/header/headerUser";
 import { successAlert,errorAlert } from "../componens/alert/alertService";
 import Cookies from 'js-cookie';
 import Router from 'next/router';
+import { absoluteUrl } from '../../middleware/utils';
 
-export default function dashboard(){
-    const [name, setName] = useState('');
-    const [token, setToken] = useState('');
-    const [expire, setExpire] = useState('');
-    const tokenLog = Cookies.get('token');
-
-    const refreshToken = async () => {
-        try{
-            console.log(tokenLog);
-            axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
-            const response = await axios.get('http://localhost:5000/api/token')
-            .then((response) => {
-
-                //set response user to state
-                setUser(response.data);
-            })    
-            Cookies.set('token', response.data.token);
-            config.headers.Authorization = `Bearer ${tokenLog}`;
-            setToken(response.data.token);
-            const decode = jwt_decode(response.data.token);
-            setName(decode.name);
-            setExpire(decode.expire);
-        }catch(error){
-            if(error.response){
-                // errorAlert('Error','Anda tidak dapat izin masuk ke halaman ini','/auth/login')
-            }
-        }
-    }
-
-    
+export default function dashboard(props){
+    const { user, origin } = props;
+    const token = Cookies.get('token');
     useEffect(() => {
-        if(!tokenLog) {
-
-            //redirect login page
-            Router.push('/auth/login');
-        }
-        refreshToken();
-    }, []);
-
-
+      if(!token){
+        Router.push('/auth/login');
+      }
+    },[]);
     return(
+        <>
+        <Navbar/>
         <div className="container">
-            <Navbar/>
-            <h1>Welcome</h1>
+           <div className="bg-white py-24 sm:py-32 lg:py40">
+              <div className="mx-auto max-w-7x1 px-6 lg:px-8">
+                <div className="sm:text-center">
+                  <h2 className="text-lg font-semibold loading-8 text-indigo-600">Welcome</h2>
+                  <p className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4x1">Aplikasi Penilaian Kinerja Kepegawaian</p>
+                </div>
+              </div>
+           </div>
         </div>
+      </>
     );
 }
+
+/* getServerSideProps */
+export async function getServerSideProps(context) {
+    const { req } = context;
+    const { origin } = absoluteUrl(req);
+  
+    return {
+      props: {
+        origin,
+      },
+    };
+  }
+  

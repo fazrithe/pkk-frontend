@@ -69,7 +69,7 @@ export default function Register(){
                                     </div>
                                 </div>
                                 <div className="field mt-5">
-                                    <button className="button is-success is-fullwidth">Register</button>
+                                    <button className="button is-info is-fullwidth">Register</button>
                                 </div>
                             </form>
                         </div>
