@@ -94,6 +94,7 @@ function Login(props) {
       let result = await loginApi.json();
       if (result.token) {
         Cookies.set('token', result.token);
+        Cookies.set('login', true);
         // window.location.href = referer ? referer : "/";
         // const pathUrl = referer ? referer.lastIndexOf("/") : "/";
         Router.push('/dashboard');

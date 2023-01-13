@@ -1,6 +1,13 @@
 import Navbar from "../componens/header/headerUser";
+import { userService } from "../../services/user.service";
+import { useState, useEffect, use } from "react";
+import Cookies from "js-cookie";
 
 export default function index(){
+    const [users, setUsers] = useState(null);
+    useEffect(() => {
+        userService.getAll().then(x => setUsers(x));
+    }, []);
     return (
         <>
         <Navbar/>
@@ -25,19 +32,23 @@ export default function index(){
                             <th className="px-6 py-3">No</th>
                             <th className="px-6 py-3">Name</th>
                             <th className="px-6 py-3">Username</th>
+                            <th className="px-6 py-3">Email</th>
                             <th className="px-6 py-3">Action</th>
                         </tr>
                     </thead>
                     <tbody>
+                    {users && users.map((user, index) =>
                         <tr>
-                            <td className="px-6 py-3">1</td>
-                            <td className="px-6 py-3">Alex</td>
+                            <td className="px-6 py-3">{index + 1}</td>
+                            <td className="px-6 py-3">{user.name}</td>
                             <td className="px-6 py-3">alex</td>
+                            <td className="px-6 py-3">{user.email}</td>
                             <td className="px-6 py-3">
                                 <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
                                 <a href="#" className="font-medium text-red-600 dark:text-red-500 hover:underline ml-4">Delete</a>
                             </td>
                         </tr>
+                    )}
                     </tbody>
                 </table>
                 </div>

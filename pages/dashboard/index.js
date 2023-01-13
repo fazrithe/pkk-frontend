@@ -10,6 +10,7 @@ import { absoluteUrl } from '../../middleware/utils';
 export default function dashboard(props){
     const { user, origin } = props;
     const token = Cookies.get('token');
+    console.log(token);
     useEffect(() => {
       if(!token){
         Router.push('/auth/login');
