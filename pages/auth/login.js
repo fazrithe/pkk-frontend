@@ -100,6 +100,7 @@ function Login(props) {
         Router.push('/dashboard');
       } else {
         setStateFormMessage(result);
+        errorAlert('Error',result.msg, '/auth/login');
       }
       setLoading(false);
     }
