@@ -5,6 +5,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 import Navbar from '../pages/componens/header/headerUser';
 import { userService } from '../services/user.service';
+import { errorAlert,successAlert } from "../pages/componens/alert/alertService";
 
 export { formAddEdit };
 
@@ -54,11 +55,10 @@ function formAddEdit(props) {
 
     function createUser(data) {
         return userService.create(data)
-            .then(() => {
-                // alertService.success('User added', { keepAfterRouteChange: true });
-                router.push('/users');
-            })
-            .catch('');
+        .then(() => {
+            successAlert('Success', "" ,'/users')
+        })
+        .catch('');
     }
 
     function updateUser(id, data) {
@@ -75,8 +75,8 @@ function formAddEdit(props) {
         <Navbar/>
         <div className='flex justify-center'>
         <div class="w-full max-w-sm">
-        <h3 className="mb-4 text-xl font-medium text-gray-900 dark:text-white">Add</h3>
-        <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" onSubmit={handleSubmit(onSubmit)}>
+        <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 mt-4" onSubmit={handleSubmit(onSubmit)}>
+            <h3 className="mb-4 text-xl font-medium text-gray-900 dark:text-white">Add</h3>
             <div>
                 <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
                 <input type="text" {...register('name')} name="name" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" placeholder="Name" required />
@@ -118,8 +118,8 @@ function formAddEdit(props) {
                     <div className="invalid-feedback">{errors.confPassword?.message}</div>
                 </div>
             </div>
-            <div className="form-group">
-                <button type="submit" disabled={formState.isSubmitting} className="button is-info is-fullwidth">
+            <div className="mt-4">
+                <button type="submit" disabled={formState.isSubmitting} className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150">
                     {formState.isSubmitting && <span className="spinner-border spinner-border-sm mr-1"></span>}
                     Save
                 </button>

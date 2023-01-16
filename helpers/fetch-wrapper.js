@@ -45,7 +45,10 @@ function put(url, body) {
 // prefixed with underscored because delete is a reserved word in javascript
 function _delete(url) {
     const requestOptions = {
-        method: 'DELETE'
+        method: 'DELETE',
+        headers: { 
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}` }
     };
     return fetch(url, requestOptions).then(handleResponse);
 }

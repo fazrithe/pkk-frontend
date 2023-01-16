@@ -3,6 +3,7 @@ import { userService } from "../../services/user.service";
 import { useState, useEffect, use } from "react";
 import Pagination from "../../components/pagination";
 import Cookies from "js-cookie";
+import {successAlert} from "../componens/alert/alertService";
 
 export default function index(props){
     const user = props?.user;
@@ -19,17 +20,16 @@ export default function index(props){
         setLoading(false);
     }, []);
 
-    function onSubmit(data) {
-        return createUser(data)
-    }
+    function deleteUser(id){
+        setUsers(users.map(x => {
+            if(x.id === id) {x.isDeleting = true}
+            return x;
+        }));
+        userService.delete(id).then(() => {
+            setUsers(users => users.filter(x => x.id !== id));
+            successAlert('Success', "" ,'#')
+        });
 
-    function createUser(data) {
-        return userService.create(data)
-            .then(() => {
-                alertService.success('User added', { keepAfterRouteChange: true });
-                router.push('.');
-            })
-            .catch(alertService.error);
     }
 
     const indexOfLastPost = currentPage * postsPerPage;
@@ -78,7 +78,7 @@ export default function index(props){
                             <td className="px-6 py-3">{user.email}</td>
                             <td className="px-6 py-3">
                                 <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-                                <a href="#" className="font-medium text-red-600 dark:text-red-500 hover:underline ml-4">Delete</a>
+                                <a href="#" onClick={() => deleteUser(user.id)}  className="font-medium text-red-600 dark:text-red-500 hover:underline ml-4">Delete</a>
                             </td>
                         </tr>
                     )}

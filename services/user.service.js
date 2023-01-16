@@ -28,5 +28,5 @@ function update(id, params) {
 
 // prefixed with underscored because delete is a reserved word in javascript
 function _delete(id) {
-    return fetchWrapper.delete(`${process.env.NEXT_API}/${id}`);
+    return fetchWrapper.delete(`${baseUrl}/${id}`);
 }
