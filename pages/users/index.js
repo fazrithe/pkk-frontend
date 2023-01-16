@@ -10,7 +10,7 @@ export default function index(props){
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
-    const [postsPerPage] = useState(10);
+    const [postsPerPage] = useState(5);
     const [showModal, setShowModal] = useState(false);
     console.log(user);
     useEffect(() => {
@@ -34,7 +34,7 @@ export default function index(props){
 
     const indexOfLastPost = currentPage * postsPerPage;
     const indexOfFirstPost = indexOfLastPost - postsPerPage;
-    const currentPosts = users.slice(indexOfFirstPost, indexOfLastPost);
+    const currentUsers = users.slice(indexOfFirstPost, indexOfLastPost);
 
     // Change page
     const paginateFront = () => setCurrentPage(currentPage + 1);
@@ -70,7 +70,7 @@ export default function index(props){
                         </tr>
                     </thead>
                     <tbody>
-                    {users && users.map((user, index) =>
+                    {currentUsers && currentUsers.map((user, index) =>
                         <tr>
                             <td className="px-6 py-3">{index + 1}</td>
                             <td className="px-6 py-3">{user.name}</td>

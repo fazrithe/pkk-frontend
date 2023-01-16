@@ -19,7 +19,7 @@ function getById(id) {
 }
 
 function create(params) {
-    return fetchWrapper.post(`${baseUrl}/add`, params);
+    return fetchWrapper.post(`${baseUrl}`, params);
 }
 
 function update(id, params) {
