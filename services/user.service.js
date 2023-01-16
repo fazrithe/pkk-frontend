@@ -19,7 +19,7 @@ function getById(id) {
 }
 
 function create(params) {
-    return fetchWrapper.post(process.env.NEXT_API, params);
+    return fetchWrapper.post(`${baseUrl}/add`, params);
 }
 
 function update(id, params) {
