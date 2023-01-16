@@ -1,13 +1,28 @@
 import Navbar from "../componens/header/headerUser";
 import { userService } from "../../services/user.service";
 import { useState, useEffect, use } from "react";
+import Pagination from "../../components/pagination";
 import Cookies from "js-cookie";
 
 export default function index(){
-    const [users, setUsers] = useState(null);
+    const [users, setUsers] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [postsPerPage] = useState(10);
+    const [showModal, setShowModal] = useState(false);
+
     useEffect(() => {
+        setLoading(true);
         userService.getAll().then(x => setUsers(x));
+        setLoading(false);
     }, []);
+    const indexOfLastPost = currentPage * postsPerPage;
+    const indexOfFirstPost = indexOfLastPost - postsPerPage;
+    const currentPosts = users.slice(indexOfFirstPost, indexOfLastPost);
+
+    // Change page
+    const paginateFront = () => setCurrentPage(currentPage + 1);
+    const paginateBack = () => setCurrentPage(currentPage - 1);
     return (
         <>
         <Navbar/>
@@ -15,7 +30,9 @@ export default function index(){
             <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
                 <div className="flex items-center justify-between pb-4">    
                     <div className="mt-8 ml-8 mb-4">
-                        <a href="#" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Add</a>
+                    <button  onClick={() => setShowModal(true)} data-modal-target="authentication-modal" data-modal-show="authentication-modal" data-modal-toggle="authentication-modal" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
+                        Add
+                    </button>
                     </div>
                     <label for="table-search" className="sr-only">Search</label>
                     <div className="relative mt-1 mr-8">
@@ -41,7 +58,7 @@ export default function index(){
                         <tr>
                             <td className="px-6 py-3">{index + 1}</td>
                             <td className="px-6 py-3">{user.name}</td>
-                            <td className="px-6 py-3">alex</td>
+                            <td className="px-6 py-3">{user.username}</td>
                             <td className="px-6 py-3">{user.email}</td>
                             <td className="px-6 py-3">
                                 <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
@@ -53,39 +70,79 @@ export default function index(){
                 </table>
                 </div>
                 <nav class="flex items-center justify-between pt-4" aria-label="Table navigation">
-                    <span class="text-sm font-normal text-gray-500 dark:text-gray-400 ml-8">Showing <span class="font-semibold text-gray-900 dark:text-white">1-10</span> of <span class="font-semibold text-gray-900 dark:text-white">1000</span></span>
-                    <ul class="inline-flex items-center -space-x-px mr-8 mb-4">
-                        <li>
-                            <a href="#" class="block px-3 py-2 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                                <span class="sr-only">Previous</span>
-                                <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">1</a>
-                        </li>
-                        <li>
-                            <a href="#" class="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">2</a>
-                        </li>
-                        <li>
-                            <a href="#" aria-current="page" class="z-10 px-3 py-2 leading-tight text-blue-600 border border-blue-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white">3</a>
-                        </li>
-                        <li>
-                            <a href="#" class="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">...</a>
-                        </li>
-                        <li>
-                            <a href="#" class="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">100</a>
-                        </li>
-                        <li>
-                            <a href="#" class="block px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                                <span class="sr-only">Next</span>
-                                <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
-                            </a>
-                        </li>
-                    </ul>
+                <Pagination
+                    postsPerPage={postsPerPage}
+                    totalPosts={users.length}
+                    paginateBack={paginateBack}
+                    paginateFront={paginateFront}
+                    currentPage={currentPage}
+                />
+
                 </nav>
             </div>
         </div>
+        {showModal ? (
+                   <>
+                     <div
+                       className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none"
+                     >
+                       <div className="relative w-auto my-2 mx-auto max-w-2xl">
+                         {/*content*/}
+                         <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+                           {/*header*/}
+                           <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
+                             <h3 className="text-3xl font-semibold">
+                               Add User
+                             </h3>
+                             <button
+                               className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+                               onClick={() => setShowModal(false)}
+                             >
+                               <span className="bg-transparent text-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none">
+                                 ×
+                               </span>
+                             </button>
+                           </div>
+                           {/*body*/}
+                           <div className="relative p-6 flex-auto">
+                           <form class="space-y-6" action="#">
+                                <div>
+                                    <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your Name</label>
+                                    <input type="text" name="name" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" placeholder="Name" required />
+                                </div>
+                                <div>
+                                    <label for="username" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your Username</label>
+                                    <input type="text" name="username" id="username" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" placeholder="Username" required />
+                                </div>
+                                <div>
+                                    <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your email</label>
+                                    <input type="email" name="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" placeholder="name@company.com" required />
+                                </div>
+                           </form>
+                            </div>
+                           {/*footer*/}
+                           <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
+                             <button
+                               className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                               type="button"
+                               onClick={() => setShowModal(false)}
+                             >
+                               Close
+                             </button>
+                             <button
+                               className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                               type="button"
+                               onClick={() => setShowModal(false)}
+                             >
+                               Save Changes
+                             </button>
+                           </div>
+                         </div>
+                       </div>
+                     </div>
+                     <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
+                   </>
+        ) : null}
         </>
     );
 }
