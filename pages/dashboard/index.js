@@ -19,7 +19,6 @@ export default function dashboard(props){
     return(
         <>
         <Navbar/>
-        <div className="container">
            <div className="bg-white py-24 sm:py-32 lg:py40">
               <div className="mx-auto max-w-7x1 px-6 lg:px-8">
                 <div className="sm:text-center">
@@ -28,7 +27,6 @@ export default function dashboard(props){
                 </div>
               </div>
            </div>
-        </div>
       </>
     );
 }

@@ -42,7 +42,7 @@ export default function index(props){
     return (
         <>
         <Navbar/>
-        <div className="container mt-6">
+        <div className="mx-auto max-w-7x1 px-6 lg:px-8">
             <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
                 <div className="flex items-center justify-between pb-4">    
                     <div className="mt-8 ml-8 mb-4">
