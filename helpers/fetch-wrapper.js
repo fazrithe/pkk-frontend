@@ -1,22 +1,26 @@
 import Cookies from "js-cookie";
 import { userService } from "../services/user.service";
 import getConfig from 'next/config';
+import { Await } from "react-router-dom";
 
 const { publicRuntimeConfig } = getConfig();
+
+
+const token = Cookies.get('token');
+
 
 export const fetchWrapper = {
     get,
     post,
+    patch,
     put,
     delete: _delete
 };
 
-const token = Cookies.get('token');
-
 function get(url) {
     const requestOptions = {
         method: 'GET',
-        headers: { Authorization: `Bearer ${token}` }
+        headers: authHeader()
 
     };
     return fetch(url, requestOptions).then(handleResponse);
@@ -33,10 +37,21 @@ function post(url, body) {
     return fetch(url, requestOptions).then(handleResponse);
 }
 
+function patch(url,getToken) {
+    const requestOptions = {
+        method: 'PATCH',
+        headers: authHeader()
+    };
+    return fetch(url, requestOptions).then(handleResponse);
+}
+
 function put(url, body) {
     const requestOptions = {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+         },
         body: JSON.stringify(body)
     };
     return fetch(url, requestOptions).then(handleResponse);
@@ -53,7 +68,7 @@ function _delete(url) {
     return fetch(url, requestOptions).then(handleResponse);
 }
 
-function authHeader(url) {
+function authHeader() {
     return { Authorization: `Bearer ${token}` };
 }
 

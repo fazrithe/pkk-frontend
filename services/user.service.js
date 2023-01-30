@@ -1,3 +1,4 @@
+import Cookies from 'js-cookie';
 import { fetchWrapper } from '../helpers/fetch-wrapper';
 
 export const userService = {
@@ -9,13 +10,14 @@ export const userService = {
 };
 
 const baseUrl = `${process.env.NEXT_API}/api/users`;
+const token = Cookies.get('token');
 
 function getAll() {
     return fetchWrapper.get(baseUrl);
 }
 
 function getById(id) {
-    return fetchWrapper.get(`${process.env.NEXT_API}/${id}`);
+    return fetchWrapper.patch(`${baseUrl}/${id}`,token);
 }
 
 function create(params) {
@@ -23,7 +25,7 @@ function create(params) {
 }
 
 function update(id, params) {
-    return fetchWrapper.put(`${process.env.NEXT_API}/${id}`, params);
+    return fetchWrapper.put(`${baseUrl}/${id}`, params);
 }
 
 // prefixed with underscored because delete is a reserved word in javascript

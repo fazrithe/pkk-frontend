@@ -3,6 +3,7 @@ import { userService } from "../../services/user.service";
 import { useState, useEffect, use } from "react";
 import Pagination from "../../components/pagination";
 import Cookies from "js-cookie";
+import Link from "next/link";
 import {successAlert} from "../componens/alert/alertService";
 
 export default function index(props){
@@ -13,7 +14,6 @@ export default function index(props){
     const [currentPage, setCurrentPage] = useState(1);
     const [postsPerPage] = useState(5);
     const [showModal, setShowModal] = useState(false);
-    console.log(user);
     useEffect(() => {
         setLoading(true);
         userService.getAll().then(x => setUsers(x));
@@ -39,6 +39,7 @@ export default function index(props){
     // Change page
     const paginateFront = () => setCurrentPage(currentPage + 1);
     const paginateBack = () => setCurrentPage(currentPage - 1);
+
     return (
         <>
         <Navbar/>
@@ -77,7 +78,7 @@ export default function index(props){
                             <td className="px-6 py-3">{user.username}</td>
                             <td className="px-6 py-3">{user.email}</td>
                             <td className="px-6 py-3">
-                                <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+                                <Link href={`users/edit/${user.id}`} className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</Link>
                                 <a href="#" onClick={() => deleteUser(user.id)}  className="font-medium text-red-600 dark:text-red-500 hover:underline ml-4">Delete</a>
                             </td>
                         </tr>

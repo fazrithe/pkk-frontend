@@ -6,6 +6,7 @@ import * as Yup from 'yup';
 import Navbar from '../pages/componens/header/headerUser';
 import { userService } from '../services/user.service';
 import { errorAlert,successAlert } from "../pages/componens/alert/alertService";
+import Cookies from 'js-cookie';
 
 export { formAddEdit };
 
@@ -69,7 +70,6 @@ function formAddEdit(props) {
             })
             .catch(alertService.error);
     }
-
     return (
         <>
         <Navbar/>
